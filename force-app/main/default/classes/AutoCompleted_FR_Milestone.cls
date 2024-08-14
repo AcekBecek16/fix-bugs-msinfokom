@@ -12,9 +12,14 @@ global class AutoCompleted_FR_Milestone {
     List<requestParams> collection
   ) {
     List<resultParams> result = new List<resultParams>();
+    resultParams res = new resultParams();
 
-    if (collection.isEmpty())
+    if (collection.isEmpty()) {
+      res.StatusUpdate = 400;
+      result.add(res);
+
       return result;
+    }
 
     String CaseID = '' + collection[0].CaseID;
     String MilestoneName = '' + collection[0].milestoneName;
@@ -43,6 +48,11 @@ global class AutoCompleted_FR_Milestone {
 
     System.debug('milestone update: ' + MilestoneUpdate);
     Database.update(MilestoneUpdate);
+
+    res.CaseID = collection[0].CaseID;
+    res.StatusUpdate = 200;
+    result.add(res);
+
     return result;
   }
 
@@ -60,5 +70,8 @@ global class AutoCompleted_FR_Milestone {
   global class resultParams {
     @InvocableVariable
     global String CaseID;
+
+    @InvocableVariable
+    global Integer StatusUpdate;
   }
 }
